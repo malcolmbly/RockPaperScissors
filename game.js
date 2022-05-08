@@ -7,9 +7,8 @@ function game() {
     playerScore = 0;
     computerScore = 0;
     for (let i = 0; i < 5; i++){
-
+        
         let result = playRound(computerPlay(), playerPlay());
-
         console.log(result);
     }
     console.log(`Final result is player: ${playerScore} and computer: ${computerScore}`);
@@ -24,10 +23,11 @@ function game() {
 }
 
 function computerPlay() {
-    const r = Math.random();
-    if (r <= 1 / 3) {
+    
+    let r = Math.random();
+    if (r <= 1 / 3.0) {
         return "Rock";
-    } else if (r <= 2 / 3) {
+    } else if (r <= 2 / 3.0) {
         return "Paper";
     } else {
         return "Scissors";
@@ -42,11 +42,11 @@ function playerPlay() {
 function playRound(computerChoice, playerChoice) {
     
     if (playerChoice.toLowerCase() == "rock") {
-        if (computerChoice == "rock") {
+        if (computerChoice == "Rock") {
             //tie
             return "It's a tie! Rock and Rock";
             
-        } else if (computerChoice == "scissors") {
+        } else if (computerChoice == "Scissors") {
             //player win
             playerScore++;
             return "You win! Rock beats scissors."
@@ -58,12 +58,12 @@ function playRound(computerChoice, playerChoice) {
         }
     } else if (playerChoice.toLowerCase() == "paper") {
 
-        if (computerChoice == "rock") {
+        if (computerChoice == "Rock") {
             //player win
             playerScore++;
             return "You win! Paper beats rock."
 
-        } else if (computerChoice == "scissors") {
+        } else if (computerChoice == "Scissors") {
             //computer win
             computerScore++;
             return "You lose! Scissors beats paper."
@@ -74,12 +74,12 @@ function playRound(computerChoice, playerChoice) {
         }
     } else {
         //player chose scissors
-        if (computerChoice == "rock") {
+        if (computerChoice == "Rock") {
             //computer win
             computerScore++;
             return "You lose! Rock beats scissors."
             
-        } else if (computerChoice == "scissors") {
+        } else if (computerChoice == "Scissors") {
             //tie
             return "It's a tie! Scissors and Scissors";
 
