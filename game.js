@@ -1,26 +1,21 @@
-let playerScore;
-let computerScore;
+let playerScore = 0;
+let computerScore = 0;
 
-game();
+const controls = document.querySelector("#controls");
+const buttons = controls.querySelectorAll(".gameButton");
 
-function game() {
-    playerScore = 0;
-    computerScore = 0;
-    for (let i = 0; i < 5; i++){
-        
-        let result = playRound(computerPlay(), playerPlay());
-        console.log(result);
-    }
-    console.log(`Final result is player: ${playerScore} and computer: ${computerScore}`);
+buttons.forEach(btn => btn.addEventListener("click",
+    function (e) {
+        let result = playRound(computerPlay(), e.target.innerText);
+        updateUI(result);
+    }))
 
-    if (playerScore > computerScore) {
-        console.log("Player wins!")
-    } else if (computerScore > playerScore) {
-        console.log("Computer wins!");
-    } else {
-        console.log("It's a tie!");
-    }
-}
+const resultsContainer = document.querySelector("#results");
+const playerScoreField = document.querySelector("#playerScore");
+const cpuScoreField = document.querySelector("#computerScore");
+
+const resultText = document.createElement('p');
+resultsContainer.appendChild(resultText);
 
 function computerPlay() {
     
@@ -32,11 +27,6 @@ function computerPlay() {
     } else {
         return "Scissors";
     }
-}
-
-function playerPlay() {
-    let choice = prompt("Type rock, paper, or scissors.");
-    return choice;
 }
 
 function playRound(computerChoice, playerChoice) {
@@ -89,4 +79,29 @@ function playRound(computerChoice, playerChoice) {
             return "You win! Scissors beats paper."
         }
     }
+}
+
+function gameOverCheck(result) {
+
+    if (playerScore == 5) {
+        console.log("Player win detected");
+        resultText.textContent = result + "\n Game over! You Win!";
+
+    } else if (computerScore == 5) {
+        console.log("computer win detected");
+        resultText.textContent = result + "\n Game over! Computer Wins!";
+
+    } else {
+        resultText.textContent = result;
+    }
+
+}
+
+function updateUI(result) {
+
+    playerScoreField.textContent = `Player Score = ${playerScore}`;
+    cpuScoreField.textContent = `Computer Score = ${computerScore}`;
+
+    gameOverCheck(result);
+    
 }
