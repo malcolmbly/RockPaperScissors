@@ -4,11 +4,7 @@ let computerScore = 0;
 const controls = document.querySelector("#controls");
 const buttons = controls.querySelectorAll(".gameButton");
 
-buttons.forEach(btn => btn.addEventListener("click",
-    function (e) {
-        let result = playRound(computerPlay(), e.target.innerText);
-        updateUI(result);
-    }))
+buttons.forEach(btn => btn.addEventListener("click", playRound))
 
 const resultsContainer = document.querySelector("#results");
 const playerScoreField = document.querySelector("#playerScore");
@@ -16,6 +12,13 @@ const cpuScoreField = document.querySelector("#computerScore");
 
 const resultText = document.createElement('p');
 resultsContainer.appendChild(resultText);
+
+const rstButton = document.createElement('button');
+rstButton.textContent = "Restart";
+rstButton.addEventListener('click', () => resetGame());
+
+
+
 
 function computerPlay() {
     
@@ -29,54 +32,66 @@ function computerPlay() {
     }
 }
 
-function playRound(computerChoice, playerChoice) {
+function playRound(event) {
     
+    const computerChoice = computerPlay();
+    const playerChoice = event.target.innerText;
+        
     if (playerChoice.toLowerCase() == "rock") {
         if (computerChoice == "Rock") {
             //tie
-            return "It's a tie! Rock and Rock";
+            updateUI("It's a tie! Rock and Rock");
+            return;
             
         } else if (computerChoice == "Scissors") {
             //player win
             playerScore++;
-            return "You win! Rock beats scissors."
+            updateUI("You win! Rock beats scissors.");
+            return;
 
         } else {
             //computer win
             computerScore++;
-            return "You lose! Paper beats rock."
+            updateUI("You lose! Paper beats rock.")
+            return;
         }
     } else if (playerChoice.toLowerCase() == "paper") {
 
         if (computerChoice == "Rock") {
             //player win
             playerScore++;
-            return "You win! Paper beats rock."
+            updateUI("You win! Paper beats rock.");
+            return;
 
         } else if (computerChoice == "Scissors") {
             //computer win
             computerScore++;
-            return "You lose! Scissors beats paper."
+            updateUI("You lose! Scissors beats paper.");
+            return;
 
         } else {
             //tie
-            return "It's a tie! Paper and Paper";
+            updateUI("It's a tie! Paper and Paper");
+            return;
         }
     } else {
         //player chose scissors
         if (computerChoice == "Rock") {
             //computer win
             computerScore++;
-            return "You lose! Rock beats scissors."
+            updateUI("You lose! Rock beats scissors.");
+            return;
             
         } else if (computerChoice == "Scissors") {
             //tie
-            return "It's a tie! Scissors and Scissors";
+            updateUI("It's a tie! Scissors and Scissors");
+            return;
 
         } else {
             //player win
             playerScore++;
-            return "You win! Scissors beats paper."
+            updateUI("You win! Scissors beats paper.");
+            return;
         }
     }
 }
@@ -84,12 +99,16 @@ function playRound(computerChoice, playerChoice) {
 function gameOverCheck(result) {
 
     if (playerScore == 5) {
-        console.log("Player win detected");
+
         resultText.textContent = result + "\n Game over! You Win!";
+        createRestartButton();
+        makeButtonsInactive();
 
     } else if (computerScore == 5) {
-        console.log("computer win detected");
+
         resultText.textContent = result + "\n Game over! Computer Wins!";
+        createRestartButton();
+        makeButtonsInactive();
 
     } else {
         resultText.textContent = result;
@@ -104,4 +123,30 @@ function updateUI(result) {
 
     gameOverCheck(result);
     
+}
+
+function createRestartButton() {
+    
+    controls.appendChild(rstButton);
+
+}
+
+function resetGame() {
+
+    playerScore = 0;
+    computerScore = 0;
+    updateUI("");
+    controls.removeChild(rstButton);
+
+    buttons.forEach(btn => btn.addEventListener("click",
+    function (e) {
+        let result = playRound(computerPlay(), e.target.innerText);
+        updateUI(result);
+    }))
+
+}
+
+function makeButtonsInactive() {
+    
+    buttons.forEach(btn => btn.removeEventListener("click", playRound));
 }
